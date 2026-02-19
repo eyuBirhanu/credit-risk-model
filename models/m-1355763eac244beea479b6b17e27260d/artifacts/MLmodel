@@ -1,0 +1,22 @@
+artifact_path: file:C:/Users/Eyu Birhanu/projects/kifiya-AI/credit-risk-model/src/mlruns/1/models/m-1355763eac244beea479b6b17e27260d/artifacts
+flavors:
+  python_function:
+    env:
+      conda: conda.yaml
+      virtualenv: python_env.yaml
+    loader_module: mlflow.sklearn
+    model_path: model.pkl
+    predict_fn: predict
+    python_version: 3.13.9
+  sklearn:
+    code: null
+    pickled_model: model.pkl
+    serialization_format: cloudpickle
+    sklearn_version: 1.7.2
+mlflow_version: 3.7.0
+model_id: m-1355763eac244beea479b6b17e27260d
+model_size_bytes: 1094
+model_uuid: m-1355763eac244beea479b6b17e27260d
+prompts: null
+run_id: 3cf673bfa24a4d3db3fe0f6d23c7cde1
+utc_time_created: '2025-12-15 03:05:48.848404'
