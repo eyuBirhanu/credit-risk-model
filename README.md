@@ -71,7 +71,7 @@ credit-risk-model/
 
 ### 1. Clone the Repository
 ```bash
-git clone <repo_url>
+git clone [repo_url](https://github.com/eyuBirhanu/credit-risk-model.git)
 cd credit-risk-model
 ```
 
