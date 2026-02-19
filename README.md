@@ -1,47 +1,63 @@
-# 🏦 Credit Risk Scoring Model (Bati Bank)
+# 🏦 Bati Bank – Credit Risk Scoring Model
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
-![FastAPI](https://img.shields.io/badge/FastAPI-0.104.0-009688?logo=fastapi&logoColor=white)
-![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.3.0-F7931E?logo=scikit-learn&logoColor=white)
-![MLflow](https://img.shields.io/badge/MLflow-2.8.0-0194E2?logo=mlflow&logoColor=white)
-![Code Style](https://img.shields.io/badge/Code%20Style-Flake8-black)
+![Python](https://img.shields.io/badge/Python-3.11-blue?logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-1.31-FF4B4B?logo=streamlit&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.4-F7931E?logo=scikit-learn&logoColor=white)
+![CI/CD](https://github.com/eyuBirhanu/credit-risk-model/actions/workflows/ci.yml/badge.svg)
 
-## 📌 Project Overview
-**Bati Bank** is partnering with an eCommerce platform to introduce a **Buy-Now-Pay-Later (BNPL)** service. This project implements a **Credit Scoring Model** to estimate the likelihood of a loan default.
-
-> **Objective:** Categorize users into **High Risk** (Bad) and **Low Risk** (Good) groups to optimize loan approvals and minimize financial loss.
+A **production-grade credit scoring system** that uses customer transaction behavior to predict default risk.  
+This project demonstrates a **full end-to-end machine learning pipeline**—from data processing and model training to deployment as an interactive dashboard with model explainability.
 
 ---
 
-## 💼 Business Understanding & Compliance
+## 🚀 Interactive Demo
 
-### 🏛️ Basel II Capital Accord
-This project adheres to the **Internal Ratings-Based (IRB)** approach:
-- **Risk Measurement:** We calculate the **Probability of Default (PD)**.
-- **Auditability:** The model must be interpretable, not a "black box".
-- **Strategy:** Prefer interpretable models (Logistic Regression + WoE) or use SHAP values for complex models (XGBoost).
+![Demo Screenshot](./screenshot.png)
 
-### 📊 The Proxy Variable Strategy (RFM)
-Since the dataset lacks historical default labels, we engineer a **proxy variable** using **RFM Analysis**:
-
-| Component | Definition | Assumption |
-| :--- | :--- | :--- |
-| **Recency (R)** | Days since last transaction | **Low R** = Active/Engaged |
-| **Frequency (F)** | Total number of transactions | **High F** = Committed User |
-| **Monetary (M)** | Total spend amount | **High M** = High Value |
-
-> **Classification Logic:** High F, High M, and Low R users are "Good" (Low Risk). Inactive or low-value users are "Bad" (High Risk).
+*A screenshot of the Streamlit dashboard.*
 
 ---
 
-## 🤖 Model Strategy
+## 💼 Business Problem & Compliance
 
-We evaluate two distinct approaches to balance accuracy and interpretability:
+Bati Bank is partnering with an e-commerce platform to offer a **Buy Now, Pay Later (BNPL)** service.  
+To minimize financial losses from loan defaults, the bank requires a reliable way to assess the **credit risk of customers with no traditional credit history**.
 
-| Approach | Pros | Cons |
-| :--- | :--- | :--- |
-| **Logistic Regression (WoE)** | ✅ Highly interpretable<br>✅ Standard in banking<br>✅ Easy regulatory compliance | ❌ May miss complex, non-linear patterns |
-| **Gradient Boosting (XGBoost/LGBM)** | ✅ High predictive accuracy<br>✅ Handles non-linear data well | ❌ "Black Box" nature<br>❌ Requires SHAP for explainability |
+### 🏛️ Basel II Compliance
+
+This project aligns with the **Basel II Internal Ratings-Based (IRB) approach** by:
+
+- **Risk Quantification:** The model predicts a **Probability of Default (PD)**.
+- **Transparency & Auditability:** Model decisions are explainable using **SHAP**, meeting regulatory expectations.
+
+### 📊 Proxy Target Strategy (RFM Analysis)
+
+Because historical default labels are unavailable, the project creates a **proxy target variable** using **RFM analysis**:
+
+- **Recency** – How recently a customer transacted  
+- **Frequency** – How often they transact  
+- **Monetary Value** – How much they spend  
+
+Customers with **high recency, low frequency, and low monetary value** are assumed to be higher risk.  
+These segments are identified using **K-Means clustering** and labeled as **high-risk**.
+
+---
+
+## 💡 Solution Overview & Key Features
+
+This solution delivers a robust, production-ready ML system with:
+
+- **✅ Reliability**  
+  Automated unit tests (`pytest`) and CI/CD via **GitHub Actions** ensure code quality and stability.
+
+- **🔍 Explainability**  
+  **SHAP** provides feature-level explanations for every prediction, clearly showing *why* a customer is classified as high or low risk.
+
+- **🎈 User-Friendly Interface**  
+  A **Streamlit dashboard** enables loan officers to generate instant risk scores and explanations—no coding required.
+
+- **🧱 Modular Codebase**  
+  Clean, modular project structure following professional software engineering best practices.
 
 ---
 
@@ -49,50 +65,47 @@ We evaluate two distinct approaches to balance accuracy and interpretability:
 
 ```text
 credit-risk-model/
-├── .github/workflows/   # 🚀 CI/CD pipeline
-├── data/                # 💾 Raw and Processed Data
-├── notebooks/           # 📓 EDA and Prototyping
-├── src/                 # 🛠️ Production Source Code
-│   ├── api/             #    └── FastAPI implementation
-│   ├── data_processing.py
-│   └── train.py
-├── tests/               # 🧪 Unit Tests
-├── Dockerfile           # 🐳 Containerization
-└── requirements.txt     # 📦 Dependencies
-```
+├── .github/workflows/ci.yml   # 🚀 CI/CD Pipeline
+├── data/                      # 💾 Raw and processed data
+├── models/artifacts/          # 📦 Trained model, preprocessor, feature list
+├── notebooks/                 # 📓 EDA and experimentation
+├── src/                       # 🛠️ Production source code
+│   ├── api/                   # (Optional) FastAPI implementation
+│   ├── features.py            # Feature engineering logic
+│   ├── train.py               # Model training script
+│   └── utils.py               # Helper functions
+├── tests/                     # 🧪 Unit tests
+├── dashboard.py               # 🎈 Streamlit application
+└── requirements.txt           # 📦 Project dependencies
+
+## ⚙️ Quick Start
+
+### Prerequisites
+
+- Python **3.9+**
+- Git
 
 ---
 
-## 🚀 Setup Instructions
+### 1️⃣ Clone the Repository
 
-### Prerequisites
-- Python 3.8+
-- Git
-
-### 1. Clone the Repository
 ```bash
-git clone [repo_url](https://github.com/eyuBirhanu/credit-risk-model.git)
+git clone https://github.com/eyuBirhanu/credit-risk-model.git
 cd credit-risk-model
 ```
 
-### 2. Install Dependencies
+### 2️⃣ Install Dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
 
----
+### 3️⃣ Run the Dashboard
 
-## 💻 Usage
-
-### Run Exploratory Data Analysis (EDA)
-Launch the Jupyter Notebook to explore the dataset and RFM analysis:
 ```bash
-jupyter notebook notebooks/eda.ipynb
+streamlit run dashboard.py
 ```
 
-### Start the Prediction API
-Run the FastAPI server locally:
-```bash
-uvicorn src.api.main:app --reload
-```
-> The API will be available at `http://127.0.0.1:8000`. API docs at `/docs`.
+The application will be available at: 👉 **[http://localhost:8501](http://localhost:8501)**
+
+### 4️⃣ Run Tests (Optional) To verify data processing and model logic: bash Copy code `pytest`
